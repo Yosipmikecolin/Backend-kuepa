@@ -1,12 +1,16 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as WebSocket from 'ws';
+import { ChatsService } from './chats.service';
 
 @Injectable()
 export class ChatGateway implements OnModuleInit {
   private wss: WebSocket.Server;
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly services: ChatsService,
+  ) {}
 
   onModuleInit() {
     this.wss = new WebSocket.Server({ port: 8080 });
@@ -17,7 +21,7 @@ export class ChatGateway implements OnModuleInit {
         const { token, text } = JSON.parse(message);
         try {
           const decoded = this.jwtService.verify(token);
-          const response = { user: decoded.id, text };
+          const response = { user: decoded.username, text };
           this.broadcast(JSON.stringify(response));
         } catch (error) {
           ws.send(JSON.stringify({ error: 'Unauthorized' }));
@@ -28,13 +32,12 @@ export class ChatGateway implements OnModuleInit {
         console.log('Client disconnected');
       });
     });
-
-    console.log('WebSocket server is running on ws://localhost:8080');
   }
 
   private broadcast(message: string) {
     this.wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
+        this.services.saveMessage(message);
         client.send(message);
       }
     });

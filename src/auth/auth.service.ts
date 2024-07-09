@@ -31,7 +31,8 @@ export class AuthService {
         ...user,
         password: bcrypt.hashSync(user.password, 10),
       });
-      return await this.userRepository.save(newUser);
+      const { name, type } = await this.userRepository.save(newUser);
+      return { name, type };
     }
   }
 
@@ -47,7 +48,8 @@ export class AuthService {
     if (findUser.user === user && match) {
       return {
         message: 'Autenticado correctamente',
-        access_token: this.jwtService.sign({ id: findUser.user }),
+        name: findUser.name,
+        access_token: this.jwtService.sign({ username: findUser.user }),
       };
     } else {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');

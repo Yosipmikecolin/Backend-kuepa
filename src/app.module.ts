@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entities/auth.entity';
 import { ConfigModule } from '@nestjs/config';
 import { ChatsModule } from './chats/chats.module';
+import { Chat } from './chats/entities/chats.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ChatsModule } from './chats/chats.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],
+      entities: [User,Chat],
       synchronize: true, // * Opcional: sincroniza automáticamente las estructuras de la base de datos (no recomendado en producción)
     }),
 
