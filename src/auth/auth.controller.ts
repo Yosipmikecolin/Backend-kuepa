@@ -15,4 +15,9 @@ export class AuthController {
   loginUser(@Body() user: LoginUserDto) {
     return this.services.loginUser(user);
   }
+
+  /*   @Delete('')
+  deleteUser() {
+    return this.services.deleteUser();
+  } */
 }

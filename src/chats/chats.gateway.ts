@@ -37,9 +37,10 @@ export class ChatGateway implements OnModuleInit {
   private broadcast(message: string) {
     this.wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
-        this.services.saveMessage(message);
         client.send(message);
       }
     });
+
+    this.services.saveMessage(message);
   }
 }

@@ -55,4 +55,8 @@ export class AuthService {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
   }
+
+  /*   async deleteUser() {
+    await this.userRepository.delete({});
+  } */
 }
