@@ -3,9 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entities/auth.entity';
 import { ConfigModule } from '@nestjs/config';
-import { MessagesController } from './messages/messages.controller';
-import { MessagesService } from './messages/messages.service';
-import { MessagesModule } from './messages/messages.module';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
   imports: [
@@ -20,10 +18,9 @@ import { MessagesModule } from './messages/messages.module';
       entities: [User],
       synchronize: true, // * Opcional: sincroniza automáticamente las estructuras de la base de datos (no recomendado en producción)
     }),
+
+    ChatsModule,
     AuthModule,
-    MessagesModule,
   ],
-  controllers: [MessagesController],
-  providers: [MessagesService],
 })
 export class AppModule {}
