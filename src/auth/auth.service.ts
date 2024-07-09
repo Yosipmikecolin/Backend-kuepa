@@ -17,7 +17,6 @@ export class AuthService {
   }
 
   async loginUser(userDto: LoginUserDto) {
-    console.log('sss');
     const { user, password } = userDto;
 
     const findUser = await this.userRepository.findOne({ where: { user } });
