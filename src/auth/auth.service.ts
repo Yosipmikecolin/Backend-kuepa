@@ -4,12 +4,14 @@ import { User } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, LoginUserDto } from './dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   async createUser(user: CreateUserDto) {
@@ -30,7 +32,10 @@ export class AuthService {
     }
     const match = bcrypt.compareSync(password, findUser.password);
     if (findUser.user === user && match) {
-      return 'Autenticado correctamente';
+      return {
+        message: 'Autenticado correctamente',
+        access_token: this.jwtService.sign({ id: findUser.user }),
+      };
     } else {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
