@@ -19,4 +19,8 @@ export class ChatsService {
     const response = await this.chatRepository.save(newChat);
     return response;
   }
+
+  async getChats() {
+    return await this.chatRepository.find();
+  }
 }
