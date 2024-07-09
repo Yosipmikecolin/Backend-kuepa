@@ -48,7 +48,7 @@ export class AuthService {
     if (findUser.user === user && match) {
       return {
         message: 'Autenticado correctamente',
-        name: findUser.name,
+        name: findUser.user,
         access_token: this.jwtService.sign({ username: findUser.user }),
       };
     } else {
